@@ -188,6 +188,17 @@
         font-size: 15px;
       }
 
+      .title-panel .distance-row {
+        gap: 5px;
+        margin-top: 6px;
+      }
+
+      .distance-pill {
+        gap: 4px;
+        padding: 2px 6px;
+        font-size: 12px;
+      }
+
       .route-filter {
         width: auto;
         max-width: calc(100vw - 24px);
@@ -956,11 +967,10 @@
       var div = L.DomUtil.create('div', 'map-panel title-panel');
       div.innerHTML =
         '<h1>Pheidippidesloop organisatie</h1>' +
-        '<div class="meta">Parcourskaart met vrijwilligersposten</div>' +
+        '<div class="meta">Parcourskaart met ' + vrijwilligerData.features.length + ' vrijwilligersposten</div>' +
         '<div class="distance-row">' +
           '<span class="distance-pill"><span class="distance-dot" style="background:#0057B8"></span>Klein 4,1 km</span>' +
           '<span class="distance-pill"><span class="distance-dot" style="background:#D62828"></span>Groot ' + formatAfstand(rondeAfstand('groot')) + '</span>' +
-          '<span class="distance-pill"><span class="distance-dot" style="background:#0F766E"></span>Vrijwilligers ' + vrijwilligerData.features.length + '</span>' +
         '</div>';
       L.DomEvent.disableClickPropagation(div);
       return div;
