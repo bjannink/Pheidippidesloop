@@ -1,790 +1,115 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="nl">
 <head>
   <meta charset="utf-8">
-  <title>Pheidippidesloop</title>
+  <title>Pheidippidesloop kaarten</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""
-  />
 
   <style>
     html, body {
       margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
+      min-height: 100%;
       font-family: Arial, sans-serif;
-    }
-
-    #map {
-      width: 100%;
-      height: 100vh;
-      height: 100dvh;
-    }
-
-    .map-panel {
-      background: rgba(255,255,255,0.94);
+      background: #f6f7f9;
       color: #1f2933;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.28);
-      border-radius: 6px;
-      font-size: 13px;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+
+    main {
+      width: min(100%, 720px);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      line-height: 1.15;
+    }
+
+    p {
+      margin: 0 0 22px;
+      color: #4b5563;
+      line-height: 1.45;
+    }
+
+    .kaart-links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .kaart-link {
+      display: block;
+      padding: 18px;
+      border-radius: 8px;
+      background: #fff;
+      color: inherit;
+      text-decoration: none;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.16);
+      border: 2px solid transparent;
+    }
+
+    .kaart-link:hover,
+    .kaart-link:focus {
+      border-color: #1f2933;
+      outline: none;
+    }
+
+    .kaart-link strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 18px;
+    }
+
+    .kaart-link span {
+      color: #4b5563;
+      font-size: 14px;
       line-height: 1.35;
     }
 
-    .title-panel {
-      padding: 10px 12px;
-      min-width: 210px;
-    }
-
-    .title-panel h1 {
-      margin: 0 0 4px;
-      font-size: 17px;
-      line-height: 1.15;
-      font-weight: 700;
-    }
-
-    .title-panel .meta {
-      color: #4b5563;
-      font-size: 12px;
-    }
-
-    .title-panel .distance-row {
-      display: flex;
-      gap: 8px;
-      margin-top: 8px;
-      flex-wrap: wrap;
-    }
-
-    .distance-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 7px;
-      border-radius: 999px;
-      background: #f3f4f6;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .distance-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    .route-filter {
-      padding: 4px;
-      display: inline-flex;
-      gap: 2px;
-      border-radius: 999px;
-    }
-
-    .route-filter button {
-      border: 0;
-      background: transparent;
-      color: #1f2933;
-      border-radius: 999px;
-      min-height: 28px;
-      padding: 0 10px;
-      font: inherit;
-      font-size: 12px;
-      font-weight: 700;
-      line-height: 1;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-
-    .route-filter button:hover {
-      background: #f3f4f6;
-    }
-
-    .route-filter button.active {
-      color: #fff;
-      border-color: #1f2933;
-      background: #1f2933;
-    }
-
-    .leaflet-control-locate a {
-      font-size: 18px;
-      line-height: 28px;
-      text-align: center;
-      text-decoration: none;
-      color: #333;
-      display: block;
-      width: 30px;
-      height: 30px;
-      background: white;
-    }
-
-    .mijn-locatie-icoon {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: #1e90ff;
-      border: 2px solid white;
-      box-shadow: 0 0 0 3px rgba(30,144,255,0.25);
-    }
-
-    .km-marker {
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      line-height: 16px;
-      text-align: center;
-      font-size: 10px;
-      font-weight: bold;
-      color: white;
-      border: 2px solid white;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.35);
-      box-sizing: border-box;
-    }
-
-    .sf-marker {
-      color: white;
-      border: 2px solid white;
-      border-radius: 6px;
-      padding: 3px 8px;
-      font-size: 10px;
-      font-weight: bold;
-      white-space: nowrap;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.35);
-      box-sizing: border-box;
-    }
-
-    @media (max-width: 640px) {
-      html, body {
-        height: 100dvh;
-        overflow: hidden;
+    @media (max-width: 560px) {
+      body {
+        place-items: start stretch;
+        padding: 18px;
       }
 
-      .title-panel {
-        max-width: calc(100vw - 96px);
-        min-width: 0;
-        padding: 8px 10px;
+      h1 {
+        font-size: 23px;
       }
 
-      .title-panel h1 {
-        font-size: 15px;
+      .kaart-links {
+        grid-template-columns: 1fr;
       }
 
-      .route-filter {
-        width: auto;
-        max-width: calc(100vw - 24px);
-        box-sizing: border-box;
-      }
-
-      .route-filter button {
-        flex: 0 0 auto;
-        min-height: 36px;
-        padding: 0 12px;
-        font-size: 13px;
-      }
-
-      .leaflet-bottom.leaflet-left {
-        left: 50%;
-        bottom: max(12px, env(safe-area-inset-bottom));
-        transform: translateX(-50%);
-        pointer-events: none;
-      }
-
-      .leaflet-bottom.leaflet-left .leaflet-control {
-        margin: 0;
-      }
-
-      .leaflet-bottom.leaflet-left .route-filter {
-        pointer-events: auto;
+      .kaart-link {
+        padding: 16px;
       }
     }
   </style>
 </head>
 <body>
-  <div id="map"></div>
+  <main>
+    <h1>Pheidippidesloop kaarten</h1>
+    <p>Kies de kaart die je wilt openen.</p>
 
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin="">
-  </script>
+    <div class="kaart-links">
+      <a class="kaart-link" href="deelnemers.html">
+        <strong>Deelnemers en publiek</strong>
+        <span>Parcourskaart zonder vrijwilligersposten.</span>
+      </a>
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/leaflet-polylinedecorator@1.6.0/dist/leaflet.polylineDecorator.min.js">
-  </script>
-
-  <script>
-    var geojsonData = {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": {
-        "type": "start_gedeeld",
-        "klein": 1,
-        "groot": 1
-      },
-      "geometry": {"type":"LineString","coordinates":[[5.1565037,52.0790393],[5.1561585,52.0786786],[5.1560365,52.0786501],[5.1558944,52.0784384],[5.1558771,52.0784284],[5.1557534,52.0784536],[5.1557321,52.0784742],[5.1557236,52.0788051],[5.1557487,52.078907],[5.1558464,52.0791366],[5.1565649,52.0804402],[5.156639,52.0804912],[5.1567241,52.0805143],[5.1568133,52.080516],[5.15693,52.0805],[5.1578251,52.0803581],[5.1580857,52.0803326],[5.1581847,52.0803006],[5.1582828,52.080251],[5.1584079,52.0801998],[5.1588954,52.0800872],[5.1591975,52.080019],[5.1592392,52.0799568],[5.1591184,52.0797494],[5.1590164,52.079599],[5.1589466,52.079524],[5.1588668,52.0794743],[5.1587249,52.079412],[5.158621,52.0793397],[5.1585718,52.0792579],[5.1585524,52.079164],[5.1584886,52.0790693],[5.1584293,52.0789843],[5.1583293,52.0787982],[5.1582114,52.0785806],[5.1581871,52.0785445],[5.1581326,52.0785047],[5.1578323,52.0783726],[5.1577756,52.0783325],[5.1576305,52.0780708],[5.1572064,52.0775071],[5.1571295,52.0774424],[5.1570144,52.0773965],[5.1567104,52.0773255],[5.1566692,52.0772918],[5.1563147,52.0766474],[5.1562045,52.0765466],[5.1560278,52.0764322],[5.1559702,52.0763653],[5.1556094,52.0759799],[5.1555194,52.07591],[5.1554241,52.0758243],[5.1553529,52.0757225],[5.1552911,52.0756765],[5.1552168,52.0756687],[5.1550863,52.0756918],[5.1550435,52.07569],[5.155011,52.0756734],[5.1549946,52.075655],[5.1548946,52.0755184],[5.1548316,52.0754606],[5.1547843,52.075428],[5.1547119,52.0753549],[5.1546172,52.0752943],[5.1545351,52.0752068],[5.1544037,52.0750231],[5.1542789,52.0748796],[5.1541681,52.0747961],[5.1539875,52.0746249],[5.1538615,52.0745387],[5.1537641,52.0744443],[5.1535739,52.0743434],[5.1534056,52.0742881],[5.1529538,52.0742093],[5.1528065,52.0741751],[5.1527402,52.074144],[5.1526891,52.0740936],[5.1525974,52.0739886],[5.1522154,52.0734517],[5.1519764,52.0732624],[5.1518481,52.0731975],[5.1516205,52.0731269],[5.1515449,52.0730915],[5.1514702,52.0730407],[5.1513942,52.0729531],[5.1512624,52.0727662],[5.1510899,52.0726284],[5.1507221,52.0723406],[5.1505598,52.0722348],[5.150454,52.0721968],[5.1502747,52.0721971],[5.1499919,52.072234],[5.1498249,52.0722127],[5.1497385,52.0721731],[5.1496374,52.0720629],[5.1492754,52.0714753],[5.1492457,52.0714037],[5.1492619,52.071353],[5.1493323,52.0712996],[5.1497944,52.0708249],[5.1498526,52.0707995],[5.1503247,52.0703836],[5.1503379,52.0703562],[5.1503725,52.0703503],[5.1504379,52.0703634],[5.150474,52.0703706],[5.1505843,52.0703607],[5.1506508,52.0703229],[5.1509208,52.0700734],[5.1511454,52.0699233],[5.151387,52.0697841],[5.1515291,52.0697861],[5.1522908,52.0710455],[5.1523527,52.0711015],[5.1524391,52.0711375],[5.1526159,52.0711383],[5.1541775,52.0711281],[5.1546033,52.071208],[5.1552291,52.0713617]]}
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "type": "klein",
-        "klein": 1,
-        "groot": 0
-      },
-      "geometry": {"type":"LineString","coordinates":[[5.1552291,52.0713617],[5.1552871,52.0713821],[5.1553505,52.0714385],[5.1553756,52.071466],[5.1555092,52.0717709],[5.1558128,52.0722854],[5.1558991,52.072388],[5.1559383,52.072395],[5.1560952,52.0726112],[5.1561613,52.0726827],[5.1562779,52.072793],[5.1563132,52.0728538],[5.1564413,52.0729453],[5.1567295,52.0731206],[5.1568035,52.0731676],[5.1569598,52.073296],[5.1569946,52.0733302],[5.1570079,52.0733525],[5.1570099,52.0734165],[5.1571083,52.073559],[5.1571942,52.073712],[5.1572708,52.0738802],[5.157352,52.0740534],[5.1573692,52.0740826],[5.157617,52.0744736],[5.1578159,52.074796],[5.1578368,52.0748263],[5.1579456,52.0749401],[5.1581452,52.0752827],[5.1582831,52.0756359],[5.158471,52.0759321],[5.1586551,52.0761625],[5.1587925,52.0763173],[5.1590425,52.0765643],[5.1590961,52.0766037],[5.1594068,52.0768257],[5.1597167,52.0770325],[5.1598421,52.0771249],[5.1600191,52.0772691],[5.1603886,52.0775928],[5.160691,52.077874],[5.1608358,52.0780059],[5.1609883,52.0782115],[5.1610868,52.0783825],[5.1611814,52.0786181],[5.1612223,52.0788075],[5.1612343,52.0789733],[5.1612071,52.0792155],[5.1611762,52.0794069],[5.1611676,52.079456],[5.1611815,52.0794805],[5.1611211,52.079708],[5.161073,52.0798529],[5.1610142,52.079941],[5.1609323,52.0800262],[5.1602802,52.0804938],[5.1599236,52.0806412],[5.1597364,52.0806875],[5.15971,52.0806869],[5.1596891,52.0806733],[5.1592502,52.0799872]]}
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "type": "groot",
-        "klein": 0,
-        "groot": 1
-      },
-      "geometry": {"type":"LineString","coordinates":[[5.1552291,52.0713617],[5.1553368,52.0713638],[5.1553831,52.0713176],[5.1555236,52.0710493],[5.1555491,52.0709817],[5.1555324,52.0705764],[5.155568,52.0704917],[5.1557804,52.0701807],[5.1559098,52.0699332],[5.1559726,52.0696019],[5.1561666,52.0691145],[5.1562702,52.0690181],[5.1562711,52.0689808],[5.1565297,52.0687174],[5.1566973,52.0685672],[5.1568346,52.0684523],[5.1570442,52.0682976],[5.1572345,52.0681688],[5.1574468,52.0680248],[5.1577065,52.0678758],[5.157956,52.0677476],[5.1584844,52.0674739],[5.1586627,52.067372],[5.1591082,52.0672498],[5.1596031,52.0670906],[5.1597519,52.0670454],[5.1599573,52.0670059],[5.1600778,52.0669696],[5.160231,52.066957],[5.1604744,52.0669693],[5.1606777,52.0669702],[5.1608592,52.0669543],[5.1610901,52.0669092],[5.1613978,52.0668426],[5.1618286,52.0667275],[5.1633729,52.0664021],[5.1635511,52.0663779],[5.1638204,52.0663643],[5.1641452,52.0663685],[5.1649525,52.0664385],[5.1653241,52.0664708],[5.1659334,52.0665448],[5.166231,52.0665699],[5.1666212,52.0665847],[5.1668888,52.066623],[5.167051,52.0666654],[5.1672601,52.0667202],[5.167485,52.0667531],[5.1681401,52.0667982],[5.1689161,52.0668576],[5.1692403,52.0667661],[5.169384,52.0667404],[5.1694144,52.0667258],[5.1695463,52.066721],[5.1696634,52.066738],[5.169794,52.0667707],[5.1698703,52.0668086],[5.1699429,52.0668738],[5.1699812,52.0669707],[5.1700087,52.0670149],[5.1700388,52.067062],[5.1700264,52.0672292],[5.1699252,52.0677071],[5.1698776,52.0678074],[5.1697101,52.0679222],[5.1696586,52.0679687],[5.1696439,52.0680547],[5.1696569,52.0681003],[5.1696941,52.0681482],[5.1697525,52.0681695],[5.1718146,52.0683584],[5.1733513,52.0687637],[5.1748165,52.0695867],[5.175701,52.0700704],[5.1767678,52.070653],[5.1768068,52.0706871],[5.1767657,52.0707391],[5.1765735,52.0709046],[5.1742788,52.072739],[5.17218,52.0744242],[5.1720549,52.0745282],[5.1712617,52.0751764],[5.1706004,52.0756948],[5.1692854,52.0767454],[5.1686339,52.0772611],[5.1685547,52.0772752],[5.1683962,52.07722],[5.1671018,52.0766228],[5.167017,52.0765872],[5.1669914,52.0765923],[5.1661911,52.0769608],[5.1655785,52.0772213],[5.1644751,52.0776266],[5.1630967,52.0781552],[5.1626389,52.0784009],[5.1621766,52.0787338],[5.161982,52.0789022],[5.1618494,52.0791292],[5.1617527,52.0793251],[5.1616017,52.0796815],[5.1614023,52.079928],[5.1610513,52.080214],[5.1608143,52.0804125],[5.1603744,52.080664],[5.1602213,52.0807485],[5.1602248,52.0807654],[5.1602894,52.0807987],[5.1603613,52.0808173],[5.1604244,52.0807967],[5.1604474,52.0807591],[5.1602394,52.080398],[5.1601469,52.0803084],[5.160105,52.0802977],[5.1600038,52.0802936],[5.1599154,52.080272],[5.1598446,52.080209],[5.159775,52.0800858],[5.1597043,52.0799845],[5.1596459,52.0799691],[5.1594935,52.0799734],[5.1593245,52.0800099],[5.1592502,52.0799872]]}
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "type": "finish_gedeeld",
-        "klein": 1,
-        "groot": 1
-      },
-      "geometry": {"type":"LineString","coordinates":[[5.1592502,52.0799872],[5.1590767,52.0797085],[5.158985,52.0795828],[5.1589302,52.0795265],[5.1588771,52.0794917],[5.1587862,52.0794501],[5.1586824,52.0793979],[5.1586172,52.0793502],[5.1585765,52.0792917],[5.1585372,52.0791652],[5.1585071,52.0791131],[5.1584399,52.0790252],[5.1583774,52.0789279],[5.1581795,52.0785611],[5.1581527,52.0785476],[5.1581213,52.0785421],[5.1580581,52.0785567],[5.1577892,52.0789587],[5.1579875,52.0795768],[5.1579959,52.079614],[5.1579957,52.0796552],[5.1579912,52.0796962],[5.1579797,52.0797293],[5.1579532,52.0797741],[5.1579154,52.0798191],[5.1578662,52.0798612],[5.1577884,52.0799067],[5.1576727,52.079948],[5.1575618,52.0799695],[5.1574983,52.0799742],[5.1574302,52.0799743],[5.1573707,52.0799715],[5.1572991,52.07996],[5.1572349,52.0799462],[5.1571724,52.079926],[5.1571024,52.0798947],[5.1570611,52.0798684],[5.1570205,52.0798373],[5.1569808,52.0797988],[5.1569545,52.0797707],[5.1565037,52.0790393]]}
-    }
-  ]
-};
-    var markerData = {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": {
-        "type": "start_finish_wissel",
-        "km": 0,
-        "label": "Start/Finish",
-        "ronde": "beide"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          5.1565037,
-          52.0790393
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "type": "kilometerpunt",
-        "km": 1,
-        "label": "KM 1",
-        "ronde": "beide"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          5.155942,
-          52.0763352
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "type": "kilometerpunt",
-        "km": 2,
-        "label": "KM 2",
-        "ronde": "beide"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          5.1513378,
-          52.0698124
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "type": "kilometerpunt",
-        "km": 3,
-        "label": "KM 3",
-        "ronde": "groot"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          5.1599719,
-          52.0670015
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "type": "kilometerpunt",
-        "km": 4,
-        "label": "KM 4",
-        "ronde": "groot"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          5.1717293,
-          52.0683506
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "type": "kilometerpunt",
-        "km": 5,
-        "label": "KM 5",
-        "ronde": "groot"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          5.1718408,
-          52.0747031
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "type": "kilometerpunt",
-        "km": 6,
-        "label": "KM 6",
-        "ronde": "groot"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          5.1616698,
-          52.0795208
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "type": "kilometerpunt",
-        "km": 3,
-        "label": "KM 3",
-        "ronde": "klein"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          5.1589117,
-          52.0764351
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "type": "kilometerpunt",
-        "km": 4,
-        "label": "KM 4",
-        "ronde": "klein"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          5.1577322,
-          52.0799267
-        ]
-      }
-    }
-  ]
-};
-
-    var map = L.map('map', {
-      zoomControl: true,
-      maxZoom: 24
-    });
-
-    var luchtfotoLayer = L.tileLayer.wms('https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0', {
-      layers: 'Actueel_orthoHR',
-      format: 'image/png',
-      transparent: false,
-      version: '1.3.0',
-      attribution: 'PDOK Luchtfoto',
-      maxZoom: 24
-    }).addTo(map);
-
-    var stratenLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap-bijdragers'
-    });
-
-    L.control.layers({
-      'Luchtfoto': luchtfotoLayer,
-      'Stratenkaart': stratenLayer
-    }, null, {
-      position: 'topleft',
-      collapsed: true
-    }).addTo(map);
-
-    // Begin en einde dezelfde kleur
-    var gedeeldeKleur = '#E0B400';
-    var gedeeldePijlKleur = '#8A6D00';
-
-    var kleuren = {
-      start_gedeeld: gedeeldeKleur,
-      finish_gedeeld: gedeeldeKleur,
-      klein: '#0057B8',
-      groot: '#D62828'
-    };
-
-    var pijlKleuren = {
-      start_gedeeld: gedeeldePijlKleur,
-      finish_gedeeld: gedeeldePijlKleur,
-      klein: '#003E85',
-      groot: '#A61E1E'
-    };
-
-    var rondeKleuren = {
-      beide: gedeeldeKleur,
-      klein: '#0057B8',
-      groot: '#D62828'
-    };
-
-    function getKleur(type) {
-      return kleuren[type] || '#666666';
-    }
-
-    function getPijlKleur(type) {
-      return pijlKleuren[type] || '#444444';
-    }
-
-    function getMarkerKleur(ronde) {
-      return rondeKleuren[ronde] || '#666666';
-    }
-
-    function getTypeNaam(type) {
-      var namen = {
-        start_gedeeld: 'Gedeeld startdeel',
-        finish_gedeeld: 'Gedeeld finishdeel',
-        klein: 'Kleine ronde',
-        groot: 'Grote ronde'
-      };
-      return namen[type] || 'Parcours';
-    }
-
-    function formatAfstand(km) {
-      return km.toFixed(1).replace('.', ',') + ' km';
-    }
-
-    function afstandTussen(a, b) {
-      var aardeStraal = 6371;
-      var lat1 = a[1] * Math.PI / 180;
-      var lat2 = b[1] * Math.PI / 180;
-      var dLat = (b[1] - a[1]) * Math.PI / 180;
-      var dLon = (b[0] - a[0]) * Math.PI / 180;
-      var sinLat = Math.sin(dLat / 2);
-      var sinLon = Math.sin(dLon / 2);
-      var h = sinLat * sinLat + Math.cos(lat1) * Math.cos(lat2) * sinLon * sinLon;
-      return 2 * aardeStraal * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
-    }
-
-    function lijnAfstand(feature) {
-      var coords = feature.geometry && feature.geometry.coordinates;
-      if (!coords || coords.length < 2) return 0;
-      var totaal = 0;
-      for (var i = 1; i < coords.length; i++) {
-        totaal += afstandTussen(coords[i - 1], coords[i]);
-      }
-      return totaal;
-    }
-
-    function rondeAfstand(ronde) {
-      return geojsonData.features.reduce(function(totaal, feature) {
-        var p = feature.properties || {};
-        if (ronde === 'klein' && p.klein) return totaal + lijnAfstand(feature);
-        if (ronde === 'groot' && p.groot) return totaal + lijnAfstand(feature);
-        return totaal;
-      }, 0);
-    }
-
-    function getLijnPopup(feature) {
-      var p = feature.properties || {};
-      var rondes = [];
-      if (p.klein) rondes.push('kleine ronde');
-      if (p.groot) rondes.push('grote ronde');
-      return '<b>' + getTypeNaam(p.type) + '</b><br>' +
-        'Onderdeel van: ' + rondes.join(' en ') + '<br>' +
-        'Segment: ' + formatAfstand(lijnAfstand(feature));
-    }
-
-    function getMarkerPopup(feature) {
-      var p = feature.properties || {};
-      var rondeNamen = {
-        beide: 'kleine en grote ronde',
-        klein: 'kleine ronde',
-        groot: 'grote ronde'
-      };
-      return '<b>' + (p.label || 'Kilometerpunt') + '</b><br>' +
-        'Onderdeel van: ' + (rondeNamen[p.ronde] || 'parcours');
-    }
-
-    var parcoursLayer = L.geoJSON(geojsonData, {
-      style: function(feature) {
-        var type = feature.properties.type;
-        return {
-          color: getKleur(type),
-          weight: 4,
-          opacity: 0.95,
-          lineCap: 'round',
-          lineJoin: 'round'
-        };
-      },
-      onEachFeature: function(feature, layer) {
-        layer.bindPopup(getLijnPopup(feature));
-      }
-    }).addTo(map);
-
-    var routeSegments = [];
-
-    parcoursLayer.eachLayer(function(layer) {
-      if (!(layer instanceof L.Polyline)) return;
-
-      var feature = layer.feature || {};
-      var type = feature.properties ? feature.properties.type : null;
-
-      var decorator = L.polylineDecorator(layer, {
-        patterns: [
-          {
-            offset: 30,
-            repeat: 100,
-            symbol: L.Symbol.arrowHead({
-              pixelSize: 8,
-              polygon: true,
-              pathOptions: {
-                stroke: true,
-                weight: 2,
-                color: getPijlKleur(type),
-                fillOpacity: 1
-              }
-            })
-          }
-        ]
-      }).addTo(map);
-
-      routeSegments.push({
-        layer: layer,
-        decorator: decorator,
-        properties: feature.properties || {}
-      });
-    });
-
-    var markerPoints = [];
-
-    var markerLayer = L.geoJSON(markerData, {
-      pointToLayer: function(feature, latlng) {
-        var p = feature.properties || {};
-        var markerKleur = getMarkerKleur(p.ronde);
-        var marker;
-
-        if (p.type === 'start_finish_wissel') {
-          marker = L.marker(latlng, {
-            interactive: true,
-            keyboard: false,
-            icon: L.divIcon({
-              className: '',
-              html: '<div class="sf-marker" style="background:' + markerKleur + ';">Start/Finish</div>',
-              iconSize: [78, 24],
-              iconAnchor: [39, 12]
-            })
-          });
-          marker._ronde = p.ronde;
-          markerPoints.push(marker);
-          return marker;
-        }
-
-        if (p.type === 'kilometerpunt') {
-          marker = L.marker(latlng, {
-            interactive: true,
-            keyboard: false,
-            icon: L.divIcon({
-              className: '',
-              html: '<div class="km-marker" style="background:' + markerKleur + ';">' + (p.km ?? '') + '</div>',
-              iconSize: [20, 20],
-              iconAnchor: [10, 10]
-            })
-          });
-          marker._ronde = p.ronde;
-          markerPoints.push(marker);
-          return marker;
-        }
-
-        marker = L.circleMarker(latlng, {
-          radius: 5,
-          color: '#333',
-          weight: 2,
-          fillColor: '#fff',
-          fillOpacity: 1,
-          interactive: false
-        });
-        marker._ronde = p.ronde;
-        markerPoints.push(marker);
-        return marker;
-      },
-      onEachFeature: function(feature, layer) {
-        var p = feature.properties || {};
-        if (p.type === 'kilometerpunt') {
-          layer.bindPopup(getMarkerPopup(feature));
-        }
-
-        layer.on('click', function(e) {
-          if (e.originalEvent) {
-            L.DomEvent.stopPropagation(e.originalEvent);
-          }
-        });
-      }
-    }).addTo(map);
-
-    function segmentPastBijRonde(properties, ronde) {
-      if (ronde === 'beide') return true;
-      return Boolean(properties[ronde]);
-    }
-
-    function markerPastBijRonde(marker, ronde) {
-      if (ronde === 'beide') return true;
-      return marker._ronde === ronde || marker._ronde === 'beide';
-    }
-
-    function zetLayerZichtbaar(layer, zichtbaar) {
-      if (zichtbaar && !map.hasLayer(layer)) {
-        layer.addTo(map);
-      } else if (!zichtbaar && map.hasLayer(layer)) {
-        map.removeLayer(layer);
-      }
-    }
-
-    function toonRonde(ronde) {
-      routeSegments.forEach(function(segment) {
-        var zichtbaar = segmentPastBijRonde(segment.properties, ronde);
-        zetLayerZichtbaar(segment.layer, zichtbaar);
-        zetLayerZichtbaar(segment.decorator, zichtbaar);
-      });
-
-      markerPoints.forEach(function(marker) {
-        zetLayerZichtbaar(marker, markerPastBijRonde(marker, ronde));
-      });
-
-      document.querySelectorAll('.route-filter button').forEach(function(button) {
-        button.classList.toggle('active', button.dataset.ronde === ronde);
-      });
-    }
-
-    var allesBounds = L.featureGroup([parcoursLayer, markerLayer]);
-    if (allesBounds.getBounds().isValid()) {
-      map.fitBounds(allesBounds.getBounds(), { padding: [20, 20] });
-    } else {
-      map.setView([52.1, 5.1], 13);
-    }
-
-    var titleControl = L.control({ position: 'topright' });
-    titleControl.onAdd = function () {
-      var div = L.DomUtil.create('div', 'map-panel title-panel');
-      div.innerHTML =
-        '<h1>Pheidippidesloop</h1>' +
-        '<div class="meta">Parcourskaart voor kleine en grote ronde</div>' +
-        '<div class="distance-row">' +
-          '<span class="distance-pill"><span class="distance-dot" style="background:#0057B8"></span>Klein 4,1 km</span>' +
-          '<span class="distance-pill"><span class="distance-dot" style="background:#D62828"></span>Groot ' + formatAfstand(rondeAfstand('groot')) + '</span>' +
-        '</div>';
-      L.DomEvent.disableClickPropagation(div);
-      return div;
-    };
-    titleControl.addTo(map);
-
-    var filterControl = L.control({ position: 'bottomleft' });
-    filterControl.onAdd = function () {
-      var div = L.DomUtil.create('div', 'map-panel route-filter');
-      div.innerHTML =
-        '<button type="button" class="active" data-ronde="beide">Beide</button>' +
-        '<button type="button" data-ronde="klein">Klein</button>' +
-        '<button type="button" data-ronde="groot">Groot</button>';
-      L.DomEvent.disableClickPropagation(div);
-      div.querySelectorAll('button').forEach(function(button) {
-        L.DomEvent.on(button, 'click', function(e) {
-          L.DomEvent.stop(e);
-          toonRonde(button.dataset.ronde);
-        });
-      });
-      return div;
-    };
-    filterControl.addTo(map);
-
-    var locatieMarker = null;
-    var locatieCirkel = null;
-
-    function toonLocatie(e) {
-      var latlng = e.latlng;
-      var radius = e.accuracy || 0;
-
-      if (locatieMarker) map.removeLayer(locatieMarker);
-      if (locatieCirkel) map.removeLayer(locatieCirkel);
-
-      var locatieIcon = L.divIcon({
-        className: '',
-        html: '<div class="mijn-locatie-icoon"></div>',
-        iconSize: [18, 18],
-        iconAnchor: [9, 9]
-      });
-
-      locatieMarker = L.marker(latlng, { icon: locatieIcon }).addTo(map);
-
-      locatieCirkel = L.circle(latlng, {
-        radius: radius,
-        weight: 1,
-        opacity: 0.6,
-        fillOpacity: 0.15
-      }).addTo(map);
-    }
-
-    function locatieFout(e) {
-      alert('Locatie kon niet worden bepaald: ' + e.message);
-    }
-
-    map.on('locationfound', toonLocatie);
-    map.on('locationerror', locatieFout);
-
-    var LocateControl = L.Control.extend({
-      options: { position: 'topleft' },
-      onAdd: function() {
-        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-locate');
-        var link = L.DomUtil.create('a', '', container);
-        link.href = '#';
-        link.title = 'Toon mijn locatie';
-        link.innerHTML = '◎';
-
-        L.DomEvent.disableClickPropagation(container);
-        L.DomEvent.on(link, 'click', function(e) {
-          L.DomEvent.stop(e);
-          map.locate({
-            setView: true,
-            maxZoom: 19,
-            enableHighAccuracy: true
-          });
-        });
-
-        return container;
-      }
-    });
-
-    map.addControl(new LocateControl());
-  </script>
+      <a class="kaart-link" href="organisatie.html">
+        <strong>Organisatie</strong>
+        <span>Parcourskaart met vrijwilligersposten.</span>
+      </a>
+    </div>
+  </main>
 </body>
 </html>
