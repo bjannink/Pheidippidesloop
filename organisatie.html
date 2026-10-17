@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="nl">
 <head>
   <meta charset="utf-8">
@@ -172,6 +172,44 @@
       box-sizing: border-box;
     }
 
+    .bord-marker {
+      width: 16px;
+      height: 16px;
+      background: #1a73b8;
+      border: 2px solid white;
+      border-radius: 2px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.45);
+      box-sizing: border-box;
+    }
+
+    .pilon-marker {
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 12px solid #f97316;
+      filter: drop-shadow(0 0 1px white) drop-shadow(0 0 1px white);
+    }
+
+    .bord-label {
+      color: #1a73b8;
+      border-color: #a5cce8;
+      font-size: 12px;
+      font-weight: bold;
+      pointer-events: none;
+    }
+
+    .kaartlegenda { padding: 8px 10px; max-width: 220px; }
+    .kaartlegenda summary { cursor: pointer; font-weight: bold; }
+    .kaartlegenda p { margin: 6px 0 0; font-size: 12px; }
+    .legenda-regel { display: flex; gap: 8px; align-items: center; margin-top: 6px; }
+    .legenda-lint { width: 25px; border-top: 3px dashed #7e22ce; }
+    .legenda-post { width: 14px; height: 14px; border-radius: 50%; background: #0F766E; }
+    .legenda-pilon { width: 25px; flex-shrink: 0; white-space: nowrap; color: #ea580c; font-size: 12px; letter-spacing: -3px; }
+    .leaflet-control-layers { max-height: 55dvh; overflow-y: auto; }
+    .leaflet-control-layers label { padding: 3px 0; }
+    .opbouw-hint { margin-top: 6px; color: #4b5563; font-size: 12px; }
+
     @media (max-width: 640px) {
       html, body {
         height: 100dvh;
@@ -192,6 +230,10 @@
         gap: 5px;
         margin-top: 6px;
       }
+
+      .kaartlegenda { max-width: 160px; font-size: 12px; }
+      .opbouw-hint { max-width: 205px; }
+      .leaflet-bottom.leaflet-right { bottom: 62px; }
 
       .distance-pill {
         gap: 4px;
@@ -522,19 +564,6 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          5.1558377,
-          52.0723411
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "nummer": "K2"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
           5.1596826,
           52.0806854
         ]
@@ -647,6 +676,11 @@
   ]
 };
 
+    // BEGIN OPBOUWGEGEVENS
+    var bordenData = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{"type":"Pijl links","ronde":"groot"},"geometry":{"type":"Point","coordinates":[5.168514153790158,52.077298351357456]}},{"type":"Feature","properties":{"type":"Pijl rechts","ronde":"groot"},"geometry":{"type":"Point","coordinates":[5.16695165256279,52.07655951393113]}},{"type":"Feature","properties":{"type":"Nog 1 km","ronde":"groot"},"geometry":{"type":"Point","coordinates":[5.162960412795429,52.07823955583602]}},{"type":"Feature","properties":{"type":"6 km","ronde":"groot"},"geometry":{"type":"Point","coordinates":[5.161630492897999,52.079518277188654]}},{"type":"Feature","properties":{"type":"Pijl rechts","ronde":"groot"},"geometry":{"type":"Point","coordinates":[5.169689544929998,52.068130103660515]}},{"type":"Feature","properties":{"type":"Pijl links","ronde":"groot"},"geometry":{"type":"Point","coordinates":[5.170024161828138,52.06700060428877]}},{"type":"Feature","properties":{"type":"Pijl rechtdoor","ronde":"groot"},"geometry":{"type":"Point","coordinates":[5.169030030665591,52.066818929579156]}},{"type":"Feature","properties":{"type":"Pijl links","ronde":"groot"},"geometry":{"type":"Point","coordinates":[5.176775895114534,52.07068346867757]}},{"type":"Feature","properties":{"type":"5 km","ronde":"groot"},"geometry":{"type":"Point","coordinates":[5.171851494187785,52.07470796376738]}},{"type":"Feature","properties":{"type":"Pijl rechtdoor","ronde":"groot"},"geometry":{"type":"Point","coordinates":[5.174726734559452,52.069574785873066]}},{"type":"Feature","properties":{"type":"4 km","ronde":"groot"},"geometry":{"type":"Point","coordinates":[5.171727696587474,52.068358954560274]}},{"type":"Feature","properties":{"type":"1 km","ronde":"beide"},"geometry":{"type":"Point","coordinates":[5.155918027373468,52.07634382803751]}},{"type":"Feature","properties":{"type":"Pijl links","ronde":"beide"},"geometry":{"type":"Point","coordinates":[5.155019656629984,52.07570508141341]}},{"type":"Feature","properties":{"type":"2 km","ronde":"beide"},"geometry":{"type":"Point","coordinates":[5.151318641898443,52.0697985462835]}},{"type":"Feature","properties":{"type":"Pijl rechts","ronde":"beide"},"geometry":{"type":"Point","coordinates":[5.151505106013919,52.06975810295835]}},{"type":"Feature","properties":{"type":"Splitsing 7 km R 4 km L","ronde":"beide"},"geometry":{"type":"Point","coordinates":[5.155191819899927,52.07134067763901]}},{"type":"Feature","properties":{"type":"Pijl rechtdoor","ronde":"groot"},"geometry":{"type":"Point","coordinates":[5.15608658374367,52.069240272971136]}},{"type":"Feature","properties":{"type":"3 km","ronde":"groot"},"geometry":{"type":"Point","coordinates":[5.159972839123187,52.06700265369414]}},{"type":"Feature","properties":{"type":"Pijl rechtdoor","ronde":"klein"},"geometry":{"type":"Point","coordinates":[5.155773658735808,52.072256074895286]}},{"type":"Feature","properties":{"type":"3 km","ronde":"klein"},"geometry":{"type":"Point","coordinates":[5.15892478830173,52.076430331174755]}},{"type":"Feature","properties":{"type":"Nog 500 m","ronde":"beide"},"geometry":{"type":"Point","coordinates":[5.159239324454563,52.07999934482547]}},{"type":"Feature","properties":{"type":"Pijl rechtdoor","ronde":"klein"},"geometry":{"type":"Point","coordinates":[5.159292725456063,52.08006790798646]}},{"type":"Feature","properties":{"type":"Pijl links","ronde":"groot"},"geometry":{"type":"Point","coordinates":[5.159363879728827,52.08002073580144]}},{"type":"Feature","properties":{"type":"Pijl rechts","ronde":"beide"},"geometry":{"type":"Point","coordinates":[5.159166928479284,52.08002425114369]}},{"type":"Feature","properties":{"type":"Pijl rechts","ronde":"beide"},"geometry":{"type":"Point","coordinates":[5.15575725235631,52.078438158519866]}},{"type":"Feature","properties":{"type":"Naar finish","ronde":"beide"},"geometry":{"type":"Point","coordinates":[5.158274782979584,52.07871399136069]}},{"type":"Feature","properties":{"type":"Pijl rechts","ronde":"beide"},"geometry":{"type":"Point","coordinates":[5.156578094334326,52.080509984370586]}},{"type":"Feature","properties":{"type":"Pijl links","ronde":"klein"},"geometry":{"type":"Point","coordinates":[5.159752739286147,52.08069495409942]}}]};
+    var materiaalData = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{"type":"Lint","ronde":"groot","lengte_m":16.0},"geometry":{"type":"LineString","coordinates":[[5.169559549208149,52.06811897939309],[5.169568218551265,52.068152143164795],[5.169611414242924,52.06818388643959],[5.169717276587033,52.068205355727606],[5.169717276587033,52.068205355727606]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"groot","lengte_m":13.9},"geometry":{"type":"LineString","coordinates":[[5.169567265712705,52.06785269832798],[5.169573882214716,52.067977880472064],[5.169573882214716,52.067977880472064]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"groot","lengte_m":13.3},"geometry":{"type":"LineString","coordinates":[[5.1699007338356,52.06762177384867],[5.169890522039737,52.06774098804361],[5.169890522039737,52.06774098804361]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"groot","lengte_m":9.9},"geometry":{"type":"LineString","coordinates":[[5.170114228032277,52.06696811715282],[5.170095335427678,52.067056641333174],[5.170095335427678,52.067056641333174]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"groot","lengte_m":48.9},"geometry":{"type":"LineString","coordinates":[[5.169202871508366,52.066767796073115],[5.16936524018197,52.066724064106154],[5.169506609731189,52.06670651451209],[5.169677517244833,52.06672266177376],[5.169816240649199,52.066754086471775],[5.169869882862863,52.06678337520934],[5.169869882862863,52.06678337520934]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"groot","lengte_m":12.6},"geometry":{"type":"LineString","coordinates":[[5.176839081166068,52.070648454722615],[5.176875496520838,52.070672514704675],[5.176883355019994,52.07070864492557],[5.176845852073153,52.070745188959854],[5.176845450664879,52.07074518824362]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"groot","lengte_m":8.3},"geometry":{"type":"LineString","coordinates":[[5.172167528451464,52.07439561612382],[5.172098185840185,52.07445683767119]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"groot","lengte_m":8.8},"geometry":{"type":"LineString","coordinates":[[5.174753027296602,52.06953228539343],[5.174849111591243,52.06958539596323]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"groot","lengte_m":8.6},"geometry":{"type":"LineString","coordinates":[[5.174742320989826,52.06958916149877],[5.174836004043559,52.06964078352342]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"groot","lengte_m":8.7},"geometry":{"type":"LineString","coordinates":[[5.173285005842149,52.06871281064133],[5.173389557177263,52.068757279779526]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"groot","lengte_m":6.7},"geometry":{"type":"LineString","coordinates":[[5.173325981527314,52.06878981747447],[5.173394012403336,52.068832983489955]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"beide","lengte_m":48.6},"geometry":{"type":"LineString","coordinates":[[5.157232589669227,52.077481833081855],[5.157109318913405,52.07740738123449],[5.156852741171726,52.07733662681695],[5.156724444963237,52.07730273361035],[5.156676600197505,52.07723832357601]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"beide","lengte_m":9.4},"geometry":{"type":"LineString","coordinates":[[5.154776947972408,52.07543991597749],[5.154719534883623,52.07536361244028]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"beide","lengte_m":9.2},"geometry":{"type":"LineString","coordinates":[[5.154791418150073,52.075436481307],[5.15473560698385,52.07536092304921]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"beide","lengte_m":22.5},"geometry":{"type":"LineString","coordinates":[[5.150032238018913,52.07224333437503],[5.149968792508294,52.07224716465792],[5.1498917616096,52.072239093733415],[5.149802737957254,52.072221598495766],[5.149757091433646,52.07219973788295],[5.149735503942612,52.07218287314597]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"beide","lengte_m":19.1},"geometry":{"type":"LineString","coordinates":[[5.150021895432489,52.072225502827706],[5.149982543070609,52.07222789736084],[5.149846141255857,52.07221228578031],[5.149808465415369,52.07220132557625],[5.149783656044254,52.072186433331105],[5.149769270501954,52.072174035789324]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"beide","lengte_m":10.4},"geometry":{"type":"LineString","coordinates":[[5.149785745442496,52.07088415076232],[5.149705043725846,52.07096314706187]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"beide","lengte_m":10.8},"geometry":{"type":"LineString","coordinates":[[5.149729668912691,52.07086127964036],[5.149650546524159,52.07094522651307]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"beide","lengte_m":8.5},"geometry":{"type":"LineString","coordinates":[[5.15031072985126,52.070365232131934],[5.150342371615969,52.07034043488216],[5.150384701424287,52.070343983126676],[5.150412362326211,52.070350841406466]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"beide","lengte_m":7.7},"geometry":{"type":"LineString","coordinates":[[5.150426706250522,52.07037103099088],[5.15046878568644,52.07038397881726],[5.150533840668248,52.07037891464174]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"beide","lengte_m":19.0},"geometry":{"type":"LineString","coordinates":[[5.151445882653687,52.06972310515491],[5.151519721754046,52.0697267160044],[5.151589296928935,52.06977781360629],[5.151617906084388,52.06983328199116]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"beide","lengte_m":8.8},"geometry":{"type":"LineString","coordinates":[[5.152315537029295,52.07113560045517],[5.152430961852661,52.07117046237786]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"klein","lengte_m":6.8},"geometry":{"type":"LineString","coordinates":[[5.155770200555,52.07230381077376],[5.155828553718245,52.0723531522089]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"klein","lengte_m":5.3},"geometry":{"type":"LineString","coordinates":[[5.156940718879983,52.07328705374313],[5.156982261579748,52.07332720902344]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"klein","lengte_m":5.4},"geometry":{"type":"LineString","coordinates":[[5.157337870240374,52.074043053253426],[5.157363930066238,52.074088744057086]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"klein","lengte_m":4.8},"geometry":{"type":"LineString","coordinates":[[5.157803716197288,52.07479250597885],[5.157830207531909,52.07483250797429]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"klein","lengte_m":7.7},"geometry":{"type":"LineString","coordinates":[[5.159029814620687,52.07655956945544],[5.159098182555214,52.07661498919985]]}},{"type":"Feature","properties":{"type":"Pilonnen","ronde":"beide","lengte_m":250.3},"geometry":{"type":"LineString","coordinates":[[5.155735550300041,52.07844242944908],[5.155708346980567,52.078462413097924],[5.155691257431494,52.07879744367684],[5.15571779890367,52.07890547326544],[5.155876926539499,52.079228048241426],[5.156026401392574,52.079496058740745],[5.156191042508255,52.0798013899369],[5.156351263820332,52.080088344933024],[5.156482665673595,52.0803585457608],[5.156546128903595,52.08044591459344],[5.156620394023034,52.08049698736011],[5.156685996261871,52.08051993561261],[5.156750080010035,52.08053077514205]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"beide","lengte_m":9.1},"geometry":{"type":"LineString","coordinates":[[5.158274781556237,52.07871426965036],[5.158243455457199,52.078657437162036],[5.158209156065004,52.07865208299312]]}},{"type":"Feature","properties":{"type":"Pilonnen","ronde":"groot","lengte_m":6.1},"geometry":{"type":"LineString","coordinates":[[5.160206328858095,52.08076547088962],[5.160204146649759,52.08075043890204],[5.160250356802929,52.08072325520918],[5.160250356802929,52.08072325520918]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"groot","lengte_m":8.3},"geometry":{"type":"LineString","coordinates":[[5.160295028644895,52.080821300089774],[5.160348247149659,52.08083726515778],[5.160403443069222,52.08081956063296]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"groot","lengte_m":9.7},"geometry":{"type":"LineString","coordinates":[[5.160253374921612,52.08043982026401],[5.160181033863684,52.0803648203544]]}},{"type":"Feature","properties":{"type":"Lint","ronde":"groot","lengte_m":22.0},"geometry":{"type":"LineString","coordinates":[[5.1602581005788,52.08039864209171],[5.160160136601218,52.08029938141189],[5.160093355688662,52.08028589476488],[5.160031941303313,52.08028299352949]]}}]};
+    // END OPBOUWGEGEVENS
+
     var map = L.map('map', {
       zoomControl: true,
       maxZoom: 24
@@ -661,12 +695,13 @@
       maxZoom: 24
     }).addTo(map);
 
-    var stratenLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap-bijdragers'
+    var stratenLayer = L.tileLayer('https://service.pdok.nl/kadaster/brt-achtergrondkaart/wmts/v2_0/standaard/EPSG:3857/{z}/{x}/{y}.png', {
+      maxNativeZoom: 19,
+      maxZoom: 24,
+      attribution: 'Kaartgegevens &copy; <a href="https://www.pdok.nl/">Kadaster / PDOK</a>'
     });
 
-    L.control.layers({
+    var lagenControl = L.control.layers({
       'Luchtfoto': luchtfotoLayer,
       'Stratenkaart': stratenLayer
     }, null, {
@@ -834,6 +869,7 @@
     var markerPoints = [];
 
     var markerLayer = L.geoJSON(markerData, {
+      filter: function(feature) { return feature.properties.type === 'start_finish_wissel'; },
       pointToLayer: function(feature, latlng) {
         var p = feature.properties || {};
         var markerKleur = getMarkerKleur(p.ronde);
@@ -897,12 +933,29 @@
       }
     }).addTo(map);
 
+    // Kilometerpunten zijn optioneel: de fysieke kilometerborden staan al in Borden.
+    var kilometerLayer = L.geoJSON(markerData, {
+      filter: function(feature) { return feature.properties.type === 'kilometerpunt'; },
+      pointToLayer: function(feature, latlng) {
+        var p = feature.properties;
+        return L.marker(latlng, {
+          icon: L.divIcon({
+            className: '',
+            html: '<div class="km-marker" style="background:' + getMarkerKleur(p.ronde) + ';">' + p.km + '</div>',
+            iconSize: [20, 20], iconAnchor: [10, 10]
+          })
+        });
+      },
+      onEachFeature: function(feature, layer) { layer.bindPopup(getMarkerPopup(feature)); }
+    });
+
     var vrijwilligerLayer = L.geoJSON(vrijwilligerData, {
       pointToLayer: function(feature, latlng) {
         var p = feature.properties || {};
         return L.marker(latlng, {
           interactive: true,
           keyboard: false,
+          zIndexOffset: 500,
           icon: L.divIcon({
             className: '',
             html: '<div class="vrijwilliger-marker">' + (p.nummer || '') + '</div>',
@@ -920,6 +973,127 @@
         });
       }
     }).addTo(map);
+
+    function veiligeTekst(value) {
+      return String(value).replace(/[&<>"']/g, function(character) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character];
+      });
+    }
+
+    function rondeNaam(ronde) {
+      return { beide: 'Kleine en grote ronde', klein: 'Kleine ronde', groot: 'Grote ronde' }[ronde];
+    }
+
+    var bordenLayer = L.geoJSON(bordenData, {
+      pointToLayer: function(feature, latlng) {
+        var p = feature.properties;
+        return L.marker(latlng, {
+          title: p.type,
+          alt: 'Bord: ' + p.type,
+          zIndexOffset: 100,
+          icon: L.divIcon({ className: '', html: '<div class="bord-marker"></div>',
+            iconSize: [16, 16], iconAnchor: [8, 8] })
+        });
+      },
+      onEachFeature: function(feature, layer) {
+        var p = feature.properties;
+        layer.bindPopup('<b>' + veiligeTekst(p.type) + '</b><br>' + rondeNaam(p.ronde));
+      }
+    }).addTo(map);
+
+    var lintLayer = L.featureGroup().addTo(map);
+    var pilonnenLayer = L.featureGroup().addTo(map);
+    materiaalData.features.forEach(function(feature) {
+      var p = feature.properties;
+      var isLint = p.type === 'Lint';
+      var group = L.featureGroup();
+      group.feature = feature;
+      // De witte onderrand maakt ook korte lijnen zichtbaar op de luchtfoto.
+      L.geoJSON(feature, { style: { color: 'white', weight: 8, opacity: 0.95 } }).addTo(group);
+      var lijn = L.geoJSON(feature, { style: {
+        color: isLint ? '#7e22ce' : '#ea580c', weight: isLint ? 4 : 3,
+        dashArray: isLint ? '7 5' : null, opacity: 1
+      } }).addTo(group);
+      if (!isLint) {
+        lijn.eachLayer(function(part) {
+          L.polylineDecorator(part, { patterns: [{ offset: 0, repeat: 32,
+            symbol: L.Symbol.marker({ markerOptions: { interactive: false, keyboard: false,
+              icon: L.divIcon({ className: '', html: '<div class="pilon-marker"></div>',
+                iconSize: [12, 12], iconAnchor: [6, 12] }) } })
+          }] }).addTo(group);
+        });
+      }
+      group.bindPopup('<b>' + veiligeTekst(p.type) + '</b>' +
+        (isLint ? '' : '<br>De driehoekjes tonen de rij, niet het aantal pilonnen.'));
+      group.addTo(isLint ? lintLayer : pilonnenLayer);
+    });
+
+    lagenControl.addOverlay(vrijwilligerLayer, 'Vrijwilligersposten (15)');
+    lagenControl.addOverlay(bordenLayer, 'Borden (28)');
+    lagenControl.addOverlay(lintLayer, 'Linten (31)');
+    lagenControl.addOverlay(pilonnenLayer, 'Pilonnenrijen (2)');
+    lagenControl.addOverlay(kilometerLayer, 'Kilometerpunten');
+
+    // Bewaar de volledige inhoud apart, zodat rondekeuze nooit een uitgezette
+    // kaartlaag inschakelt en terugschakelen ook verborgen objecten terugbrengt.
+    var opbouwGroepen = [bordenLayer, lintLayer, pilonnenLayer, kilometerLayer, vrijwilligerLayer]
+      .map(function(group) { return { group: group, layers: group.getLayers() }; });
+
+    function opbouwPastBijRonde(layer, ronde) {
+      var p = layer.feature.properties;
+      var eigenRonde = p.ronde;
+      if (p.nummer) eigenRonde = /^K/.test(p.nummer) ? 'klein' : /^G/.test(p.nummer) ? 'groot' : 'beide';
+      return ronde === 'beide' || eigenRonde === 'beide' || eigenRonde === ronde;
+    }
+
+    function toonOpbouwRonde(ronde) {
+      opbouwGroepen.forEach(function(item) {
+        item.layers.forEach(function(layer) {
+          var zichtbaar = opbouwPastBijRonde(layer, ronde);
+          if (zichtbaar && !item.group.hasLayer(layer)) item.group.addLayer(layer);
+          if (!zichtbaar && item.group.hasLayer(layer)) item.group.removeLayer(layer);
+        });
+      });
+      werkBordlabelsBij();
+    }
+
+    function werkBordlabelsBij() {
+      var occupied = Array.from(document.querySelectorAll(
+        '.leaflet-control, .vrijwilliger-marker, .sf-marker, #map .bord-marker'
+      )).map(function(element) { return element.getBoundingClientRect(); });
+      bordenLayer.eachLayer(function(layer) {
+        if (!layer.getTooltip()) {
+          var p = layer.feature.properties;
+          layer.bindTooltip(veiligeTekst(p.type), {
+            permanent: true, direction: 'right', offset: [10, 0], className: 'bord-label'
+          });
+        }
+        layer.closeTooltip();
+        if (map.getZoom() < 19 || !map.hasLayer(bordenLayer)) return;
+        layer.openTooltip();
+        var tooltip = layer.getTooltip();
+        var element = tooltip.getElement();
+        var fits = false;
+        ['right', 'left', 'top', 'bottom'].some(function(direction) {
+          tooltip.options.direction = direction;
+          tooltip.options.offset = direction === 'right' ? [10, 0] :
+            direction === 'left' ? [-10, 0] : direction === 'top' ? [0, -10] : [0, 10];
+          tooltip.update();
+          var rect = element.getBoundingClientRect();
+          var mapRect = map.getContainer().getBoundingClientRect();
+          fits = rect.left >= mapRect.left && rect.right <= mapRect.right &&
+            rect.top >= mapRect.top && rect.bottom <= mapRect.bottom &&
+            !occupied.some(function(other) {
+              return rect.left < other.right + 4 && rect.right + 4 > other.left &&
+                rect.top < other.bottom + 4 && rect.bottom + 4 > other.top;
+            });
+          if (fits) occupied.push(rect);
+          return fits;
+        });
+        if (!fits) layer.closeTooltip();
+      });
+    }
+    map.on('zoomend moveend overlayadd overlayremove', werkBordlabelsBij);
 
     function segmentPastBijRonde(properties, ronde) {
       if (ronde === 'beide') return true;
@@ -940,22 +1114,34 @@
     }
 
     function toonRonde(ronde) {
+      var rondeBounds = L.latLngBounds([]);
+
       routeSegments.forEach(function(segment) {
         var zichtbaar = segmentPastBijRonde(segment.properties, ronde);
         zetLayerZichtbaar(segment.layer, zichtbaar);
         zetLayerZichtbaar(segment.decorator, zichtbaar);
+        if (zichtbaar) rondeBounds.extend(segment.layer.getBounds());
       });
 
       markerPoints.forEach(function(marker) {
-        zetLayerZichtbaar(marker, markerPastBijRonde(marker, ronde));
+        var zichtbaar = markerPastBijRonde(marker, ronde);
+        zetLayerZichtbaar(marker, zichtbaar);
+        if (zichtbaar) rondeBounds.extend(marker.getLatLng());
       });
+
+      toonOpbouwRonde(ronde);
 
       document.querySelectorAll('.route-filter button').forEach(function(button) {
         button.classList.toggle('active', button.dataset.ronde === ronde);
       });
+
+      var bounds = ronde === 'beide' ? allesBounds.getBounds() : rondeBounds;
+      if (bounds.isValid()) {
+        map.fitBounds(bounds, { padding: [20, 20], animate: false });
+      }
     }
 
-    var allesBounds = L.featureGroup([parcoursLayer, markerLayer, vrijwilligerLayer]);
+    var allesBounds = L.featureGroup([parcoursLayer, markerLayer, vrijwilligerLayer, bordenLayer, lintLayer, pilonnenLayer]);
     if (allesBounds.getBounds().isValid()) {
       map.fitBounds(allesBounds.getBounds(), { padding: [20, 20] });
     } else {
@@ -971,11 +1157,27 @@
         '<div class="distance-row">' +
           '<span class="distance-pill"><span class="distance-dot" style="background:#0057B8"></span>Klein 4,1 km</span>' +
           '<span class="distance-pill"><span class="distance-dot" style="background:#D62828"></span>Groot ' + formatAfstand(rondeAfstand('groot')) + '</span>' +
-        '</div>';
+        '</div>' +
+        '<div class="opbouw-hint">Borden, linten en pilonnen · klik voor details.<br>Kaartlagen aan/uit via de lagenknop links.</div>';
       L.DomEvent.disableClickPropagation(div);
       return div;
     };
     titleControl.addTo(map);
+
+    var legendaControl = L.control({ position: 'bottomright' });
+    legendaControl.onAdd = function() {
+      var div = L.DomUtil.create('div', 'map-panel kaartlegenda');
+      div.innerHTML = '<details><summary>Legenda opbouw</summary>' +
+        '<div class="legenda-regel"><span class="legenda-post"></span>Vrijwilligerspost</div>' +
+        '<div class="legenda-regel"><span class="bord-marker"></span>Bord</div>' +
+        '<div class="legenda-regel"><span class="legenda-lint"></span>Lint</div>' +
+        '<div class="legenda-regel"><span class="legenda-pilon">▲ ▲ ▲</span>Pilonnenrij</div>' +
+        '<p>Zoom in voor bordteksten. Klik op een symbool voor details.</p></details>';
+      L.DomEvent.disableClickPropagation(div);
+      L.DomEvent.disableScrollPropagation(div);
+      return div;
+    };
+    legendaControl.addTo(map);
 
     var filterControl = L.control({ position: 'bottomleft' });
     filterControl.onAdd = function () {
